@@ -1,0 +1,200 @@
+html,
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: #ffffff;
+}
+section {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* Pengaturan NAVBAR */
+#myNavbar {
+  background-color: #7a01eb;
+}
+
+#myNavbar ul li a {
+  color: #e0dfdf;
+}
+#myNavbar ul li a:hover {
+  color: #ffffff;
+}
+
+#myNavbar ul.navbar-nav li.nav-item a.active {
+  color: #ffffff;
+}
+
+.navbar-brand {
+  font-family: "Pacifico", cursive;
+  font-weight: 600;
+}
+
+.navbar ul li a {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.navbar a.navbar-brand {
+  color: #fafafa;
+}
+.navbar a.navbar-brand:hover {
+  color: #ffffff;
+}
+
+.navbar a.navbar-github {
+  color: #fafafa;
+}
+/* End Navbar */
+
+/* Jumbotron */
+#jumbotron {
+  padding-top: 200px;
+  color: #ffffff;
+  background-color: #7a01eb;
+}
+
+h1.nama {
+  font-size: 60px;
+  font-weight: 600;
+  text-shadow: rgba(0, 0, 0, 0.24) 2px 2px 2px;
+}
+h4.bio {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* End Jumbotron */
+
+.judul-section {
+  margin-bottom: 50px;
+}
+
+/* About Card Items */
+#about {
+  min-height: 400px;
+}
+#about h3 {
+  color: #505050;
+}
+#about .judul-section {
+  margin-bottom: 50px;
+}
+
+#about .card {
+  border: none;
+  padding: 20px;
+  /* box-shadow: 0px 10px 20px 1px #dbdbdb; */
+}
+/* End Card */
+
+/* Projects */
+#projects {
+  min-height: 400px;
+  background-color: #7a01eb;
+}
+#projects .judul-section {
+  color: #ffffff;
+  margin-bottom: 50px;
+}
+#projects .card {
+  border: none;
+  padding: 20px;
+  transition: 0.3s all ease;
+}
+#projects .card:hover {
+  margin-top: -5px;
+  box-shadow: 1px 5px 10px 2px rgba(95, 95, 95, 0.69);
+  -webkit-box-shadow: 1px 3px 10px 2px rgba(95, 95, 95, 0.69);
+  -moz-box-shadow: 1px 5px 10px 2px rgba(95, 95, 95, 0.69);
+  cursor: pointer;
+}
+/* End Projects */
+
+/* Contact */
+#contact h3 {
+  color: #505050;
+}
+/* End Contat */
+
+/* Footer */
+footer .container {
+  position: relative;
+}
+footer .container span {
+  position: absolute;
+  bottom: -270px;
+  color: #ffffff;
+}
+/* End Footer */
+
+/* Tombol Putih */
+
+a.tombol,
+button {
+  padding: 7px 15px;
+  border-radius: 20px;
+  font-size: 15px;
+  border: none;
+  color: #7a01eb;
+}
+a.tombol-putih:hover {
+  color: #ffffff;
+  opacity: 0.9;
+}
+button:hover {
+  color: #7a01eb;
+  opacity: 0.9;
+}
+a.tombol-putih,
+button.tombol-putih {
+  background-color: transparent;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+}
+
+/* End */
+
+/* Menghilagkan text decor pada element a */
+a {
+  text-decoration: none;
+}
+
+p {
+  line-height: 30px;
+}
+
+/* Sosial Media Icon */
+.sosial-media a {
+  margin-left: 10px;
+}
+
+.sosial-media a.linkedin {
+  color: #0a66c2;
+}
+.sosial-media a.instagram {
+  color: #e4405f;
+}
+.sosial-media a.facebook {
+  color: #1877f2;
+}
+.sosial-media a.twitter {
+  color: #1da1f2;
+}
+.sosial-media a.youtube {
+  color: #cd201f;
+}
+
+/* Media Query */
+@media (max-width: 576px) {
+  #jumbotron {
+    padding-top: 100px;
+    text-align: center;
+  }
+  h1.nama {
+    font-size: 40px;
+  }
+  .sosial-media {
+    display: none;
+  }
+}
