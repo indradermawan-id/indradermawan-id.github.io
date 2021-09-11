@@ -55,6 +55,7 @@ section {
 }
 
 h1.nama {
+  color: #ffffff;
   font-size: 60px;
   font-weight: 600;
   text-shadow: rgba(0, 0, 0, 0.24) 2px 2px 2px;
@@ -69,7 +70,6 @@ h4.bio {
 .judul-section {
   margin-bottom: 50px;
 }
-
 /* About Card Items */
 #about {
   min-height: 400px;
@@ -79,6 +79,11 @@ h4.bio {
 }
 #about .judul-section {
   margin-bottom: 50px;
+}
+#about p {
+  font-size: 16px;
+  line-height: 30px;
+  color: #8b8b8b;
 }
 
 #about .card {
@@ -93,14 +98,31 @@ h4.bio {
   min-height: 400px;
   background-color: #7a01eb;
 }
+#projects .row {
+  margin-bottom: 20px;
+}
 #projects .judul-section {
   color: #ffffff;
   margin-bottom: 50px;
 }
 #projects .card {
   border: none;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 2px;
   transition: 0.3s all ease;
+  box-shadow: 0px 17px 49px -1px rgba(0, 176, 255, 0.75);
+  -webkit-box-shadow: 0px 17px 49px -1px rgba(0, 176, 255, 0.75);
+  -moz-box-shadow: 0px 17px 49px -1px rgba(0, 176, 255, 0.75);
+}
+#projects .card img {
+  background-size: contain;
+  overflow: hidden;
+  border-radius: 20px;
+}
+#projects p {
+  font-size: 16px;
+  color: #797979;
+  line-height: 25px;
 }
 #projects .card:hover {
   margin-top: -5px;
@@ -160,10 +182,6 @@ a {
   text-decoration: none;
 }
 
-p {
-  line-height: 30px;
-}
-
 /* Sosial Media Icon */
 .sosial-media a {
   margin-left: 10px;
@@ -188,13 +206,32 @@ p {
 /* Media Query */
 @media (max-width: 576px) {
   #jumbotron {
-    padding-top: 100px;
+    padding-top: 150px;
     text-align: center;
   }
+  #jumbotron .container {
+    padding-bottom: 200px;
+  }
   h1.nama {
-    font-size: 40px;
+    font-size: 30px;
+  }
+  h4.bio {
+    font-size: 18px;
+  }
+  #jumbotron p {
+    font-size: 12px;
   }
   .sosial-media {
     display: none;
+  }
+
+  #about p {
+    font-size: 12px;
+  }
+  #porjects .row {
+    margin-bottom: 0px;
+  }
+  #projects .col-md-4 {
+    margin-bottom: 20px;
   }
 }
