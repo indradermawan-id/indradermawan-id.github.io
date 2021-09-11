@@ -58,6 +58,8 @@ section {
 #jumbotron svg {
   position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 h1.nama {
@@ -113,6 +115,7 @@ h4.bio {
 }
 #projects .card {
   border: none;
+  margin-bottom: 25px;
   border-radius: 20px;
   padding: 2px;
   transition: 0.3s all ease;
@@ -146,13 +149,18 @@ h4.bio {
 /* End Contat */
 
 /* Footer */
-footer .container {
-  position: relative;
+footer {
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
-footer .container span {
-  position: absolute;
-  bottom: -270px;
+footer p {
+  margin: 0;
+  padding: 25px 10px;
   color: #ffffff;
+  background-color: #7a01eb;
+  width: 100%;
+  font-size: 15px;
 }
 /* End Footer */
 
@@ -212,7 +220,6 @@ a {
 /* Media Query */
 @media (max-width: 576px) {
   #jumbotron {
-    padding-top: 150px;
     text-align: center;
   }
   #jumbotron .container {
@@ -225,19 +232,19 @@ a {
     font-size: 18px;
   }
   #jumbotron p {
-    font-size: 12px;
+    font-size: 13px;
   }
   .sosial-media {
     display: none;
   }
 
   #about p {
-    font-size: 12px;
+    font-size: 13px;
   }
-  #porjects .row {
-    margin-bottom: 0px;
+  #porjects .row-project-1 {
+    margin-bottom: -20px;
   }
-  #projects .col-md-4 {
+  #projects .card {
     margin-bottom: 20px;
   }
 }
