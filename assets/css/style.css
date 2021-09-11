@@ -53,7 +53,7 @@ section {
   padding-top: 200px;
   color: #ffffff;
   background-color: #7a01eb;
-  height: 700px;
+  min-height: 700px;
 }
 #jumbotron svg {
   position: absolute;
