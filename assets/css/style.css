@@ -49,9 +49,15 @@ section {
 
 /* Jumbotron */
 #jumbotron {
+  position: relative;
   padding-top: 200px;
   color: #ffffff;
   background-color: #7a01eb;
+  height: 700px;
+}
+#jumbotron svg {
+  position: absolute;
+  bottom: 0;
 }
 
 h1.nama {

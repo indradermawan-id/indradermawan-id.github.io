@@ -65,18 +65,18 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-6">
-            <p class="mb-0" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">Hello, i am</p>
-            <h1 class="nama" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">Indra Dermawan</h1>
-            <h4 class="bio" data-aos="fade-left" data-aos-duration="1000">I am Junior Web Developer</h4>
-            <p data-aos="fade-left" data-iaos-duraton="1000">I come from Indonesia, who is still learning about programming languages, especially programming for web development.</p>
-            <a href="" data-aos="fade-left" data-aos-duration="1000" class="tombol tombol-putih">About Me</a>
+            <p class="hello mb-0"></p>
+            <h1 class="nama"></h1>
+            <h4 class="bio"></h4>
+            <p class="bio-text"></p>
+            <!-- <a href="#" class="tombol tombol-putih" data-aos="fade-up" data-aos-duration="5000" data-aos-delay="2000"></a> -->
           </div>
           <div class="col-lg-6"></div>
         </div>
       </div>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
         <path
-          fill="#ffffff"
+          fill="#FFFFFF"
           fill-opacity="1"
           d="M0,64L30,74.7C60,85,120,107,180,122.7C240,139,300,149,360,176C420,203,480,245,540,234.7C600,224,660,160,720,160C780,160,840,224,900,234.7C960,245,1020,203,1080,176C1140,149,1200,139,1260,133.3C1320,128,1380,128,1410,128L1440,128L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"
         ></path>
@@ -226,6 +226,15 @@
     <script src="assets/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/fontawesome-free/js/all.min.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/TextPlugin.min.js"></script>
+    <script>
+      gsap.registerPlugin(TextPlugin);
+      gsap.to(".hello", { duration: 1.5, delay: 1, text: "Hello, i am", ease: "none" });
+      gsap.to(".nama", { duration: 3, delay: 3.5, text: "Indra Dermawan", ease: "none" });
+      gsap.to(".bio", { duration: 5, delay: 6, text: "I am Junior Web Developer", ease: "none" });
+      gsap.to(".bio-text", { duration: 7, delay: 12, text: "I come from Indonesia, who is still learning about programming languages, especially programming for web development.", ease: "none" });
+    </script>
     <script>
       AOS.init();
     </script>
