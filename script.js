@@ -1,141 +1,164 @@
-const header = document.querySelector('.site-header');
-const menuBtn = document.querySelector('.menu-btn');
-const progress = document.querySelector('.scroll-progress');
-const cursorDot = document.querySelector('.cursor-dot');
-const cursorRing = document.querySelector('.cursor-ring');
+(() => {
+  "use strict";
 
-menuBtn?.addEventListener('click', () => {
-  const open = header.classList.toggle('open');
-  menuBtn.setAttribute('aria-expanded', String(open));
-});
+  const header = document.querySelector(".site-header");
+  const menuBtn = document.querySelector(".menu-btn");
+  const progress = document.querySelector(".scroll-progress");
 
-document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', () => {
-    header.classList.remove('open');
-    menuBtn?.setAttribute('aria-expanded', 'false');
+  // Mobile navigation.
+  menuBtn?.addEventListener("click", () => {
+    const open = header.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", String(open));
   });
-});
 
-// Reveal animation: opacity + transform only, once per element.
-const revealObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    entry.target.classList.add('visible');
-    revealObserver.unobserve(entry.target);
-  });
-}, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
-
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-// Active navigation.
-const sections = [...document.querySelectorAll('main section[id]')];
-const navLinks = [...document.querySelectorAll('.nav-links a')];
-
-const navObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    navLinks.forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`);
+  document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+      header.classList.remove("open");
+      menuBtn?.setAttribute("aria-expanded", "false");
     });
   });
-}, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
 
-sections.forEach(section => navObserver.observe(section));
-
-// Scroll work is batched into one animation frame.
-let scrollTick = false;
-function updateScroll() {
-  if (scrollTick) return;
-  scrollTick = true;
-
-  requestAnimationFrame(() => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const ratio = max > 0 ? window.scrollY / max : 0;
-    progress.style.transform = `scaleX(${Math.min(1, Math.max(0, ratio))})`;
-    header.classList.toggle('scrolled', window.scrollY > 24);
-    scrollTick = false;
+  // Reveal only when an element enters the viewport, then stop observing it.
+  const revealItems = document.querySelectorAll(".reveal");
+  const revealObserver = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);
+    }
+  }, {
+    threshold: 0.04,
+    rootMargin: "0px 0px -8% 0px"
   });
-}
 
-window.addEventListener('scroll', updateScroll, { passive: true });
-updateScroll();
+  revealItems.forEach(el => revealObserver.observe(el));
 
-// Lightweight magnetic hover.
-if (window.matchMedia('(pointer:fine)').matches) {
-  document.querySelectorAll('.magnetic').forEach(el => {
-    let frame = 0;
-    el.addEventListener('pointermove', e => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const r = el.getBoundingClientRect();
-        const x = (e.clientX - r.left - r.width / 2) * 0.08;
-        const y = (e.clientY - r.top - r.height / 2) * 0.08;
-        el.style.transform = `translate3d(${x}px,${y}px,0)`;
+  // Active section navigation.
+  const sections = [...document.querySelectorAll("main section[id]")];
+  const navLinks = [...document.querySelectorAll(".nav-links a")];
+
+  const navObserver = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      const id = "#" + entry.target.id;
+      navLinks.forEach(a => a.classList.toggle(
+        "active",
+        a.getAttribute("href") === id
+      ));
+    }
+  }, {
+    rootMargin: "-38% 0px -52% 0px",
+    threshold: 0
+  });
+
+  sections.forEach(section => navObserver.observe(section));
+
+  // One passive scroll listener, one animation frame at a time.
+  let scrollQueued = false;
+
+  const updateScrollUI = () => {
+    if (scrollQueued) return;
+    scrollQueued = true;
+
+    requestAnimationFrame(() => {
+      const y = window.scrollY || 0;
+
+      if (header) header.classList.toggle("scrolled", y > 20);
+
+      if (progress) {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        const ratio = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+        progress.style.transform = `scaleX(${ratio})`;
+      }
+
+      scrollQueued = false;
+    });
+  };
+
+  addEventListener("scroll", updateScrollUI, {
+    passive: true,
+    capture: false
+  });
+
+  updateScrollUI();
+
+  // Animate counters only once, only when visible.
+  document.querySelectorAll("[data-count]").forEach(el => {
+    const target = Number(el.dataset.count || 0);
+    let started = false;
+
+    const io = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting || started) return;
+      started = true;
+
+      const duration = 500;
+      const startTime = performance.now();
+
+      const tick = now => {
+        const p = Math.min(1, (now - startTime) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased);
+
+        if (p < 1) requestAnimationFrame(tick);
+      };
+
+      requestAnimationFrame(tick);
+      io.disconnect();
+    }, { threshold: 0.5 });
+
+    io.observe(el);
+  });
+
+  // Desktop-only hover effects. No permanent RAF loop.
+  const finePointer = matchMedia("(pointer:fine)").matches;
+
+  if (finePointer) {
+    document.querySelectorAll(".magnetic").forEach(el => {
+      let frame = 0;
+
+      el.addEventListener("pointermove", event => {
+        cancelAnimationFrame(frame);
+
+        frame = requestAnimationFrame(() => {
+          const r = el.getBoundingClientRect();
+          const x = (event.clientX - r.left - r.width / 2) * 0.055;
+          const y = (event.clientY - r.top - r.height / 2) * 0.055;
+          el.style.transform = `translate3d(${x}px,${y}px,0)`;
+        });
+      });
+
+      el.addEventListener("pointerleave", () => {
+        cancelAnimationFrame(frame);
+        el.style.transform = "";
       });
     });
-    el.addEventListener('pointerleave', () => {
-      el.style.transform = '';
-    });
-  });
 
-  const tilt = document.querySelector('.tilt-card');
-  tilt?.addEventListener('pointermove', e => {
-    const r = tilt.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    tilt.style.transform =
-      `perspective(900px) rotateX(${y * -3}deg) rotateY(${x * 4}deg) translate3d(0,-2px,0)`;
-  });
-  tilt?.addEventListener('pointerleave', () => {
-    tilt.style.transform = '';
-  });
+    const tilt = document.querySelector(".tilt-card");
 
-  // Custom cursor uses transform instead of layout-changing left/top.
-  let mx = innerWidth / 2, my = innerHeight / 2;
-  let rx = mx, ry = my;
-  let cursorFrame = 0;
+    if (tilt) {
+      let frame = 0;
 
-  window.addEventListener('pointermove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-    cursorDot.style.transform = `translate3d(${mx}px,${my}px,0) translate(-50%,-50%)`;
-  }, { passive: true });
+      tilt.addEventListener("pointermove", event => {
+        cancelAnimationFrame(frame);
 
-  const cursorLoop = () => {
-    rx += (mx - rx) * 0.18;
-    ry += (my - ry) * 0.18;
-    cursorRing.style.transform =
-      `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
-    cursorFrame = requestAnimationFrame(cursorLoop);
-  };
-  cursorLoop();
+        frame = requestAnimationFrame(() => {
+          const r = tilt.getBoundingClientRect();
+          const x = (event.clientX - r.left) / r.width - 0.5;
+          const y = (event.clientY - r.top) / r.height - 0.5;
 
-  document.querySelectorAll('a,button,.tilt-card').forEach(el => {
-    el.addEventListener('pointerenter', () => cursorRing.classList.add('hover'));
-    el.addEventListener('pointerleave', () => cursorRing.classList.remove('hover'));
-  });
-}
+          tilt.style.transform =
+            `perspective(900px) rotateX(${y * -2.5}deg) rotateY(${x * 3}deg) translate3d(0,-2px,0)`;
+        });
+      });
 
-// Small counters animate only when visible.
-document.querySelectorAll('[data-count]').forEach(el => {
-  const target = Number(el.dataset.count);
-  let started = false;
+      tilt.addEventListener("pointerleave", () => {
+        cancelAnimationFrame(frame);
+        tilt.style.transform = "";
+      });
+    }
+  }
 
-  const io = new IntersectionObserver(entries => {
-    if (!entries[0].isIntersecting || started) return;
-    started = true;
-
-    let start = 0;
-    const step = () => {
-      start += Math.max(1, Math.ceil(target / 16));
-      el.textContent = Math.min(start, target);
-      if (start < target) requestAnimationFrame(step);
-    };
-    step();
-    io.disconnect();
-  }, { threshold: 0.7 });
-
-  io.observe(el);
-});
-
-document.getElementById('year').textContent = new Date().getFullYear();
+  // Current year.
+  const year = document.getElementById("year");
+  if (year) year.textContent = new Date().getFullYear();
+})();
