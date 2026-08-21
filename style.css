@@ -44,32 +44,30 @@
 }
 
 
-/* === Performance layer ===
-   Keeps the visual language, but removes the most expensive scroll-time effects.
-*/
+/* =========================================================
+   INDRADERMAWAN PORTFOLIO — PERFORMANCE V2
+   Visual identity preserved; expensive continuous effects reduced.
+   ========================================================= */
+
+:root {
+  --perf-shadow: 0 14px 36px rgba(0,0,0,.20);
+}
+
+/* Remove full-screen effects that force expensive compositing. */
 .noise,
-.glow { display: none !important; }
-
-body {
-  background:
-    radial-gradient(circle at 78% 8%, rgba(55,105,180,.11), transparent 25%),
-    radial-gradient(circle at 8% 48%, rgba(57,215,190,.045), transparent 22%),
-    var(--bg);
+.glow,
+.cursor-dot,
+.cursor-ring {
+  display: none !important;
 }
 
+/* Static grid is cheap; avoid background-attachment/fixed layers. */
 .bg-grid {
-  opacity: .55;
-  background-attachment: initial;
+  background-attachment: initial !important;
+  opacity: .35 !important;
 }
 
-.scroll-progress {
-  width: 100%;
-  transform: scaleX(0);
-  transform-origin: left center;
-  will-change: transform;
-  box-shadow: none;
-}
-
+/* Glass surfaces: retain depth without backdrop blur. */
 .site-header,
 .floating-note,
 .code-card,
@@ -79,34 +77,31 @@ body {
 .stats-panel,
 .stack-panel,
 .values-panel,
-.contact-card {
+.contact-card,
+.visual-window {
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
 
 .site-header {
-  background: rgba(5,11,20,.90);
-}
-
-.site-header.scrolled {
-  background: rgba(5,11,20,.96);
-  box-shadow: 0 8px 28px rgba(0,0,0,.14);
+  background: rgba(5,11,20,.94) !important;
 }
 
 .floating-note,
 .code-card,
-.portrait-badge {
-  background: rgba(8,18,31,.94);
+.portrait-badge,
+.visual-window {
+  background: rgba(8,18,31,.96) !important;
 }
 
-.profile-card {
-  box-shadow: 0 22px 55px rgba(0,0,0,.28);
-}
-
+/* Only animate opacity + transform: GPU/compositor friendly. */
 .reveal {
   opacity: 0;
-  transform: translate3d(0,22px,0);
-  transition: opacity .65s ease, transform .65s cubic-bezier(.2,.75,.2,1);
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity .55s ease,
+    transform .55s cubic-bezier(.22,.7,.2,1) !important;
+  transition-delay: 0s !important;
 }
 
 .reveal.visible {
@@ -114,50 +109,120 @@ body {
   transform: translate3d(0,0,0);
 }
 
-/* Below-the-fold sections are skipped by the browser until near the viewport. */
-main > .about,
-main > .expertise,
-main > .profile-section,
-main > .projects,
-main > .stack-section,
-main > .values,
-main > .contact {
+/* Prevent the browser from rendering far-away sections in full detail. */
+main > section {
   content-visibility: auto;
-  contain-intrinsic-size: 0 760px;
+  contain-intrinsic-size: 0 700px;
 }
 
+/* Kill continuous decorative animations that do not add information. */
+.profile-orbit,
+.portrait-ring,
+.chart,
+.floating-note,
+.code-card,
+.marquee-track,
+.stack-icons,
+.value-icon {
+  animation: none !important;
+}
+
+/* Keep a tiny amount of life in the hero without permanent animation loops. */
+.profile-orbit {
+  transform: translateZ(0);
+}
+
+.portrait-ring {
+  opacity: .9;
+}
+
+/* Hover feedback stays, but avoid large shadows and expensive filters. */
 .project-card,
 .expertise-card,
-.contact-card {
-  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+.contact-card,
+.stack-item,
+.value-card {
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease !important;
 }
 
 .project-card:hover,
 .expertise-card:hover,
-.contact-card:hover {
-  will-change: transform;
+.contact-card:hover,
+.stack-item:hover,
+.value-card:hover {
+  transform: translate3d(0,-3px,0);
 }
 
-@media (max-width: 760px) {
-  .bg-grid { display: none; }
+/* Progress bar: transform only. */
+.scroll-progress {
+  transform-origin: left center !important;
+  will-change: transform;
+  box-shadow: none !important;
+}
 
-  .site-header {
-    box-shadow: 0 6px 22px rgba(0,0,0,.12);
-  }
-
-  .profile-orbit {
-    animation-duration: 30s;
-  }
-
+/* Disable CSS animation overhead on small screens. */
+@media (max-width: 900px) {
+  .bg-grid,
+  .profile-orbit,
   .portrait-ring,
   .floating-note,
-  .visual-window,
+  .code-card,
   .chart,
-  .marquee-track {
-    animation-duration: 10s;
+  .stack-icons,
+  .value-icon {
+    animation: none !important;
+  }
+
+  .bg-grid {
+    display: none !important;
+  }
+
+  .visual-window {
+    box-shadow: var(--perf-shadow) !important;
   }
 }
 
+@media (max-width: 600px) {
+  /* Mobile gets the lightest visual layer. */
+  .profile-orbit,
+  .portrait-badge,
+  .floating-note,
+  .code-card,
+  .chart,
+  .value-icon {
+    display: none !important;
+  }
+
+  .profile-card,
+  .timeline,
+  .stats-panel,
+  .stack-panel,
+  .values-panel,
+  .contact-card {
+    box-shadow: none !important;
+  }
+
+  .reveal {
+    transform: translate3d(0, 12px, 0);
+    transition-duration: .42s !important;
+  }
+}
+
+/* Accessibility + battery friendliness. */
 @media (prefers-reduced-motion: reduce) {
-  .scroll-progress { transform: none !important; }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
