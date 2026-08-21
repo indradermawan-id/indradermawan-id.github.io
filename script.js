@@ -1,0 +1,5 @@
+const header=document.querySelector('.site-header');const menuBtn=document.querySelector('.menu-btn');const progress=document.querySelector('.scroll-progress');
+menuBtn?.addEventListener('click',()=>{const open=header.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(open));});
+document.querySelectorAll('.nav-links a').forEach(link=>link.addEventListener('click',()=>{header.classList.remove('open');menuBtn?.setAttribute('aria-expanded','false');}));
+const observer=new IntersectionObserver(entries=>{entries.forEach((entry,index)=>{if(!entry.isIntersecting)return;entry.target.style.transitionDelay=`${Math.min(index*45,180)}ms`;entry.target.classList.add('visible');observer.unobserve(entry.target);});},{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+function updateProgress(){const max=document.documentElement.scrollHeight-window.innerHeight;progress.style.width=`${max>0?(window.scrollY/max)*100:0}%`;}window.addEventListener('scroll',updateProgress,{passive:true});updateProgress();document.getElementById('year').textContent=new Date().getFullYear();

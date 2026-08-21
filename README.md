@@ -1,30 +1,19 @@
-# Indra Dermawan — Portfolio
+# Indra Dermawan — Portfolio V2
 
-Website portofolio statis yang siap dipublikasikan menggunakan **GitHub Pages**.
+Redesign portfolio untuk GitHub Pages dengan foto profil asli.
 
-## Struktur
+## Isi
+- `index.html` — struktur halaman dan konten
+- `style.css` — visual design, responsive layout, animation
+- `script.js` — mobile navigation, scroll reveal, progress bar
+- `assets/profile.jpg` — foto profil Indra Dermawan
 
-- `index.html` — konten utama
-- `style.css` — desain, responsive layout, animasi
-- `script.js` — reveal animation, mobile menu, scroll progress
+## Publikasi GitHub Pages
+1. Upload seluruh isi folder ini ke repository GitHub Pages.
+2. Pastikan `index.html` berada di root repository.
+3. Pastikan folder `assets` ikut di-upload.
+4. Di GitHub buka Settings → Pages dan pilih branch/folder yang sesuai.
 
-## Cara publish ke GitHub Pages
-
-1. Buat repository baru di GitHub, misalnya `portfolio`.
-2. Upload `index.html`, `style.css`, dan `script.js` ke repository.
-3. Buka **Settings → Pages**.
-4. Pada **Build and deployment**, pilih:
-   - Source: `Deploy from a branch`
-   - Branch: `main`
-   - Folder: `/ (root)`
-5. Simpan dan tunggu proses deployment selesai.
-6. Website akan tersedia pada alamat GitHub Pages repository tersebut.
-
-## Sebelum publish
-
-Ganti placeholder berikut di `index.html`:
-- `emailanda@example.com`
-- `https://github.com/usernameanda`
-- `https://www.linkedin.com/`
-
-Anda juga bisa mengganti teks proyek, layanan, dan menambahkan foto profil/project screenshot.
+## Catatan
+Email pada `index.html` masih `emailanda@example.com` karena alamat email pribadi belum diberikan.
+Link GitHub diarahkan ke `https://github.com/indradermawan-id`.
